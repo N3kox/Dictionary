@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/horizontal_right"
     android:orientation="vertical"
-    tools:context=".HorizontalRight">
+    tools:context=".VerticalWordDetails">
 
     <TextView
-        android:id="@+id/horizontal_right_word"
+        android:id="@+id/detail_word"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30dp"/>
+
     <TextView
-        android:id="@+id/horizontal_right_translation"
+        android:id="@+id/detail_translation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30dp"/>
@@ -22,19 +23,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <Button
-            android:id="@+id/horizontal_pronunciation_us"
+            android:id="@+id/vertical_Pronunciation_US"
             android:text="美式"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
         <Button
-            android:id="@+id/horizontal_pronunciation_uk"
+            android:id="@+id/vertical_Pronunciation_UK"
             android:text="英式"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
     </LinearLayout>
+
 
 </LinearLayout>

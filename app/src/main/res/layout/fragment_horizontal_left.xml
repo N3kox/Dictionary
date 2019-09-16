@@ -8,15 +8,16 @@
     tools:context=".HorizontalLeft">
 
     <RelativeLayout
-        android:id="@+id/top_search"
+        android:id="@+id/horizontal_top_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:paddingTop="5dp"
         android:paddingLeft="5dp">
         <EditText
-            android:id="@+id/input_search"
+            android:id="@+id/horizontal_input_search"
             android:hint="搜索"
+            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"/>
@@ -27,6 +28,6 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/top_search"/>
+        android:layout_below="@id/horizontal_top_search"/>
 
 </RelativeLayout>

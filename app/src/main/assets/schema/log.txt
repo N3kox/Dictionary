@@ -1,0 +1,10 @@
+//TimeLine
+
+9.13 向库中添加History数据表，每次查询添加历史记录，app启动时或输入为空时ListView显示历史记录
+9.13 显示生词本activity，返回时所显示的fragment是否正确未知，需测试
+9.14 历史记录功能完成
+9.14 竖屏点击单词介绍返回后有bug
+9.14 返回bug修复,但activity返回fragment貌似不能触发resume
+9.14 resume bug修复
+9.15 单词发音
+9.16 金山key:49B6F1EBB26292D8988A833149904BC3

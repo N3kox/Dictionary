@@ -1,22 +1,19 @@
 package com.example.dictionary;
 
+import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.Environment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.media.MediaFunction;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -25,75 +22,54 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+public class VerticalWordDetails extends AppCompatActivity implements View.OnClickListener{
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class HorizontalRight extends Fragment implements View.OnClickListener {
-
-    TextView tv;
-    public LayoutInflater layoutInflater;
-    public static final String TAG = "RightFragment";
+    private String word;
+    private String translation;
     private TextView detail_word,detail_translation;
-    private String word,translation;
     private Button btn_us,btn_uk;
     private MediaPlayer mediaPlayer;
+    private MediaFunction mediaFunction = new MediaFunction();
     private String dirPath = Environment.getExternalStorageDirectory().toString();
 
-
-
-    public HorizontalRight() {
-        // Required empty public constructor
-    }
-
-
-    public static HorizontalRight newInstance(String str){
-        HorizontalRight horizontalRight = new HorizontalRight();
-        Bundle bundle = new Bundle();
-        bundle.putString(TAG,str);
-        horizontalRight.setArguments(bundle);
-        return horizontalRight;
-    }
-
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_vertical_word_details);
+        init();
 
-        View view = inflater.inflate(R.layout.fragment_horizontal_right, container, false);
-        layoutInflater = getActivity().getLayoutInflater();
-        init(view);
-        return view;
     }
-
-    private void init(View view){
-        detail_word = view.findViewById(R.id.horizontal_right_word);
-        detail_translation = view.findViewById(R.id.horizontal_right_translation);
-        btn_uk = view.findViewById(R.id.horizontal_pronunciation_uk);
-        btn_us = view.findViewById(R.id.horizontal_pronunciation_us);
+    private void init(){
+        Intent intent = getIntent();
+        word = intent.getStringExtra("word");
+        translation = intent.getStringExtra("translation");
+        detail_word = findViewById(R.id.detail_word);
+        detail_translation = findViewById(R.id.detail_translation);
+        detail_word.setText(word);
+        detail_translation.setText(translation);
         mediaPlayer = new MediaPlayer();
-        btn_uk.setOnClickListener(this);
+        btn_us = findViewById(R.id.vertical_Pronunciation_US);
+        btn_uk = findViewById(R.id.vertical_Pronunciation_UK);
         btn_us.setOnClickListener(this);
-        btn_uk.setVisibility(View.INVISIBLE);
-        btn_us.setVisibility(View.INVISIBLE);
+        btn_uk.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.horizontal_pronunciation_uk:{
+            case R.id.vertical_Pronunciation_US:{
+                //String fileName = "pronunciation_"+word+"_us.mp3";
                 fetchSoundTrack("us");
                 break;
             }
-            case R.id.horizontal_pronunciation_us:{
+            case R.id.vertical_Pronunciation_UK:{
+                //String fileName = "pronunciation_"+word+"_uk.mp3";
                 fetchSoundTrack("uk");
                 break;
             }
         }
-
     }
-
     private void fetchSoundTrack(final String type){
         final String fileName = type.equals("us")?"pronunciation_"+word+"_us.mp3":"pronunciation_"+word+"_uk.mp3";
         new Thread(new Runnable() {
@@ -148,14 +124,9 @@ public class HorizontalRight extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void setWord(String w, String t){
-        word = w;
-        translation = t;
-        detail_word.setText(word);
-        detail_translation.setText(translation);
-        btn_uk.setVisibility(View.VISIBLE);
-        btn_us.setVisibility(View.VISIBLE);
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
     }
-
 }

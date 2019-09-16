@@ -21,7 +21,7 @@ public class HorizontalMain extends Fragment{
 
     Fragment horizontalLeft = new HorizontalLeft();
     Fragment horizontalRight = new HorizontalRight();
-
+    Bundle bundle = new Bundle();
 
     public HorizontalMain() {
         // Required empty public constructor
