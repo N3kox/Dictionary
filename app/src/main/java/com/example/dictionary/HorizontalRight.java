@@ -4,21 +4,29 @@ package com.example.dictionary;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.XMLParser.Parser;
+import com.example.XMLParser.dict;
 import com.example.media.MediaFunction;
 
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 
 import okhttp3.OkHttpClient;
@@ -39,6 +47,19 @@ public class HorizontalRight extends Fragment implements View.OnClickListener {
     private Button btn_us,btn_uk;
     private MediaPlayer mediaPlayer;
     private String dirPath = Environment.getExternalStorageDirectory().toString();
+    private TextView net_ps,net_pos,net_acceptation,net_sent;
+    private TextView horizontal_hide_1,horizontal_hide_2;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if(msg.what == 1){
+                String filePath = dirPath + "/" +word + ".xml";
+                func(filePath);
+            }
+        }
+    };
 
 
 
@@ -72,11 +93,19 @@ public class HorizontalRight extends Fragment implements View.OnClickListener {
         detail_translation = view.findViewById(R.id.horizontal_right_translation);
         btn_uk = view.findViewById(R.id.horizontal_pronunciation_uk);
         btn_us = view.findViewById(R.id.horizontal_pronunciation_us);
+        net_ps = view.findViewById(R.id.horizontal_net_ps);
+        net_pos = view.findViewById(R.id.horizontal_net_pos);
+        net_acceptation = view.findViewById(R.id.horizontal_net_acceptation);
+        net_sent = view.findViewById(R.id.horizontal_net_sent);
+        horizontal_hide_1 = view.findViewById(R.id.horizontal_hide_1);
+        horizontal_hide_2 = view.findViewById(R.id.horizontal_hide_2);
         mediaPlayer = new MediaPlayer();
         btn_uk.setOnClickListener(this);
         btn_us.setOnClickListener(this);
         btn_uk.setVisibility(View.INVISIBLE);
         btn_us.setVisibility(View.INVISIBLE);
+        horizontal_hide_1.setVisibility(View.INVISIBLE);
+        horizontal_hide_2.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -155,7 +184,64 @@ public class HorizontalRight extends Fragment implements View.OnClickListener {
         detail_translation.setText(translation);
         btn_uk.setVisibility(View.VISIBLE);
         btn_us.setVisibility(View.VISIBLE);
+        horizontal_hide_1.setVisibility(View.VISIBLE);
+        horizontal_hide_2.setVisibility(View.VISIBLE);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String filePath = dirPath + "/" +word + ".xml";
+                File file = new File(filePath);
+                if(file.exists()){
+                    Message msg = new Message();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                }
+                else{
+                    try{
+                        OkHttpClient client = new OkHttpClient();
+                        String url = "https://dict-co.iciba.com/api/dictionary.php?w="+word+"&key=49B6F1EBB26292D8988A833149904BC3";
+                        Request request = new Request.Builder()
+                                .url(url)
+                                .build();
+                        Response response = client.newCall(request).execute();
+                        if(response.isSuccessful()){
+                            PrintStream ps = new PrintStream(file);
+                            byte[] bytes = response.body().bytes();
+                            ps.write(bytes,0,bytes.length);
+                            ps.close();
+                            //播放
+                            Message msg = new Message();
+                            msg.what = 1;
+                            handler.sendMessage(msg);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
 
+            }
+        }).start();
+
+    }
+    public void func(String filePath){
+        dict d = null;
+        try {
+            InputStream inputStream = new FileInputStream(filePath);
+            d = Parser.parseXML(inputStream);
+            Log.d("#TEST",d.toString());
+            net_ps.setText("发音:"+d.getPs());
+            net_pos.setText("词性:"+d.getPos());
+            net_acceptation.setText("网络词义:"+d.getAcceptation());
+            String showList = "";
+            for(int i = 0;i<d.getSents().size();i++){
+                showList += "例句"+(i+1)+":"+d.getSents().get(i).getOrig()+"\n" +
+                        "翻译"+(i+1)+":"+d.getSents().get(i).getTrans()+"\n\n";
+            }
+            net_sent.setText(showList);
+        }catch (Exception e){
+            Log.d("#TEST","failed");
+            e.printStackTrace();
+        }
     }
 
 }

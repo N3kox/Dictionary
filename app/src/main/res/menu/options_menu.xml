@@ -14,4 +14,10 @@
         android:orderInCategory="100"
         android:title="删除历史记录"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/menu_help"
+        android:orderInCategory="100"
+        android:title="帮助"
+        app:showAsAction="never"/>
+
 </menu>

@@ -1,0 +1,41 @@
+<dict num="219" id="219" name="219">
+    <key>yours</key>
+    <ps>jɔ:z</ps>
+    <pron>
+        http://res-tts.iciba.com/2/e/f/2efe0008f59e6e614481f361c6f0fdb9.mp3
+    </pron>
+    <ps>jərz</ps>
+    <pron>
+        http://res.iciba.com/resource/amp3/1/0/2e/fe/2efe0008f59e6e614481f361c6f0fdb9.mp3
+    </pron>
+    <pos>pron.</pos>
+    <acceptation> 你的；你们的；（用于书信结尾的签名前）您的诚挚的； </acceptation>
+    <sent>
+        <orig>
+            Use mine, yours, his or hers in place of the words in italics.
+        </orig>
+        <trans> 用mine, yours, his或hers替换斜体字. </trans>
+    </sent>
+    <sent>
+        <orig>
+            Jane , I'm yours. Gah, I'm yours, I'm yours and soul Much good that is.
+        </orig>
+        <trans> 简, 我是你的, 我是你的,是你的, 全心全意,也许不值一提. </trans>
+    </sent>
+    <sent>
+        <orig>
+            Wealth that you hoard is not yours , wealth ymcf that you have given is really yours.
+        </orig>
+        <trans> 你囤积起来的财富并不是你的, 你布施出去的财富才真正是你的. </trans>
+    </sent>
+    <sent>
+        <orig> Yours sincerely [ S - yours ] </orig>
+        <trans> 谨启(信的结尾语 ) </trans>
+    </sent>
+    <sent>
+        <orig>
+            The characteristics that were yours at birth were yours for a reason.
+        </orig>
+        <trans> 你拥有你与生俱来的个性特征是有理由的. </trans>
+    </sent>
+</dict>

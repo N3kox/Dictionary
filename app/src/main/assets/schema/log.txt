@@ -7,4 +7,5 @@
 9.14 返回bug修复,但activity返回fragment貌似不能触发resume
 9.14 resume bug修复
 9.15 单词发音
-9.16 金山key:49B6F1EBB26292D8988A833149904BC3
+9.16 金山key://49B6F1EBB26292D8988A833149904BC3
+9.16 音标词性例句api对接完成

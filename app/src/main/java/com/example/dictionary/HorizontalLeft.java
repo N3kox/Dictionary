@@ -3,6 +3,7 @@ package com.example.dictionary;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -155,11 +156,17 @@ public class HorizontalLeft extends ListFragment{
         switch (item.getItemId()){
             case R.id.menu_enter_vocabulary:{
                 Toast.makeText(getActivity(),"进入单词本",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(),MyVocabularyList.class);
+                startActivity(intent);
                 break;
             }
             case R.id.menu_delete_history:{
                 Toast.makeText(getActivity(),"删除历史",Toast.LENGTH_SHORT).show();
                 deleteHistory();
+                break;
+            }
+            case R.id.menu_help:{
+                Toast.makeText(getActivity(),"帮助",Toast.LENGTH_SHORT).show();
                 break;
             }
         }
@@ -302,6 +309,12 @@ public class HorizontalLeft extends ListFragment{
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity)getActivity()).setBundle(saveBundle());
+    }
+
     //添加历史记录
     private boolean insertHistory(String word,String translation){
         try{
@@ -317,8 +330,8 @@ public class HorizontalLeft extends ListFragment{
             contentValues.put("word",word);
             contentValues.put("translation",translation);
             Uri newUri= resolver.insert(uri,contentValues);
-            Log.d("#URI","before"+uri.toString());
-            Log.d("#URI","after"+newUri.toString());
+            //Log.d("#URI","before"+uri.toString());
+            //Log.d("#URI","after"+newUri.toString());
 
 
             String[] newHistoryWords = new String[historyWords.length+1];
@@ -383,6 +396,12 @@ public class HorizontalLeft extends ListFragment{
 
         if (item.getItemId() == R.id.menu_item1) {
             Toast.makeText(getActivity(), "加入生词本 with number:"+number, Toast.LENGTH_SHORT).show();
+            if(checkExistenceInVocabulary(words[number])){
+                insertIntoVocabulary(words[number],translations[number]);
+            }else{
+                //已在生词本中
+                Toast.makeText(getActivity(),"生词表已有此单词",Toast.LENGTH_SHORT).show();
+            }
         } else if (item.getItemId() == R.id.menu_item2) {
             Toast.makeText(getActivity(), "选项2 with number:"+number, Toast.LENGTH_SHORT).show();
         }
@@ -390,5 +409,24 @@ public class HorizontalLeft extends ListFragment{
         return super.onContextItemSelected(item);
     }
 
+    private boolean checkExistenceInVocabulary(String word){
+        Uri uri = Uri.parse(Configuration.URI_VOCABULARY);
+        ContentResolver resolver =  getActivity().getContentResolver();
+        Cursor cursor2 = resolver.query(uri, new String[]{"word"}, "word = ?", new String[]{word}, null);
+        if(cursor2.getCount() > 0){
+            return false;
+        }
+        return true;
+    }
+
+    private void insertIntoVocabulary(String word,String translation){
+        Uri uri = Uri.parse(Configuration.URI_VOCABULARY);
+        ContentResolver resolver = getActivity().getContentResolver();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("word",word);
+        contentValues.put("translation",translation);
+        resolver.insert(uri,contentValues);
+        Toast.makeText(getActivity(),"加入生词表成功",Toast.LENGTH_SHORT).show();
+    }
 
 }

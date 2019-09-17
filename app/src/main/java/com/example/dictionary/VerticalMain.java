@@ -19,12 +19,14 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -49,6 +51,8 @@ public class VerticalMain extends ListFragment {
     private String[] translations = new String[]{};
     private String[] historyTranslations = new String[]{};
     private boolean bundleNotGetMark = false;
+    private int number;
+
 
 
     public VerticalMain() {
@@ -90,6 +94,12 @@ public class VerticalMain extends ListFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity)getActivity()).setBundle(saveBundle());
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ((MainActivity)getActivity()).setBundle(saveBundle());
@@ -115,12 +125,17 @@ public class VerticalMain extends ListFragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_enter_vocabulary:{
-                Toast.makeText(getActivity(),"进入单词本",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(),MyVocabularyList.class);
+                startActivity(intent);
                 break;
             }
             case R.id.menu_delete_history:{
                 Toast.makeText(getActivity(),"删除历史",Toast.LENGTH_SHORT).show();
                 deleteHistory();
+                break;
+            }
+            case R.id.menu_help:{
+                Toast.makeText(getActivity(),"帮助",Toast.LENGTH_SHORT).show();
                 break;
             }
         }
@@ -329,6 +344,59 @@ public class VerticalMain extends ListFragment {
             e.printStackTrace();
             return false;
         }
+    }
+    @Override
+    public void registerForContextMenu(@NonNull View view) {
+        super.registerForContextMenu(view);
+        view.setOnCreateContextMenuListener(this);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("操作");
+        menu.setHeaderIcon(R.drawable.ic_launcher_background);
+        number = ((AdapterView.AdapterContextMenuInfo) menuInfo).position;//获取listview的item对象
+        getActivity().getMenuInflater().inflate(R.menu.long_tap_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.menu_item1) {
+            Toast.makeText(getActivity(), "加入生词本 with number:"+number, Toast.LENGTH_SHORT).show();
+            if(checkExistenceInVocabulary(words[number])){
+                insertIntoVocabulary(words[number],translations[number]);
+            }else{
+                //已在生词本中
+                Toast.makeText(getActivity(),"生词表已有此单词",Toast.LENGTH_SHORT).show();
+            }
+        } else if (item.getItemId() == R.id.menu_item2) {
+            Toast.makeText(getActivity(), "选项2 with number:"+number, Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
+    private boolean checkExistenceInVocabulary(String word){
+        Uri uri = Uri.parse(Configuration.URI_VOCABULARY);
+        ContentResolver resolver =  getActivity().getContentResolver();
+        Cursor cursor2 = resolver.query(uri, new String[]{"word"}, "word = ?", new String[]{word}, null);
+        if(cursor2.getCount() > 0){
+            return false;
+        }
+        return true;
+    }
+
+    private void insertIntoVocabulary(String word,String translation){
+        Uri uri = Uri.parse(Configuration.URI_VOCABULARY);
+        ContentResolver resolver = getActivity().getContentResolver();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("word",word);
+        contentValues.put("translation",translation);
+        resolver.insert(uri,contentValues);
+        Toast.makeText(getActivity(),"加入生词表成功",Toast.LENGTH_SHORT).show();
     }
 
 }
