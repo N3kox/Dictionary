@@ -165,8 +165,14 @@ public class HorizontalLeft extends ListFragment{
                 deleteHistory();
                 break;
             }
+            case R.id.menu_news:{
+                Toast.makeText(getActivity(),"新闻阅读",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(),NewsIndex.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.menu_help:{
-                Toast.makeText(getActivity(),"帮助",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"帮助toast",Toast.LENGTH_SHORT).show();
                 break;
             }
         }

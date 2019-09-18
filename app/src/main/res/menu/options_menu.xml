@@ -15,6 +15,11 @@
         android:title="删除历史记录"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/menu_news"
+        android:orderInCategory="100"
+        android:title="新闻阅读"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/menu_help"
         android:orderInCategory="100"
         android:title="帮助"
