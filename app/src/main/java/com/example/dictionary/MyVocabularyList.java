@@ -107,7 +107,7 @@ public class MyVocabularyList extends AppCompatActivity implements AdapterView.O
             }
             for(j = number+1;j<words.length;j++,i++){
                 newWords[i] = words[j];
-                newTranslations[i] = words[j];
+                newTranslations[i] = translations[j];
             }
             words = newWords;
             translations = newTranslations;

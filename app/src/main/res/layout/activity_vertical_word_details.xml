@@ -51,6 +51,12 @@
                     android:text="英式"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/vertical_add_vocabulary"
+                    android:layout_marginLeft="130dp"
+                    android:text="加入生词本"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <TextView
@@ -61,6 +67,7 @@
                 android:background="#DCDCDC"
                 android:layout_width="match_parent"
                 android:layout_height="50dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,6 +92,14 @@
                     android:textSize="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/vertical_tts_btn_ground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
             </LinearLayout>
         </LinearLayout>

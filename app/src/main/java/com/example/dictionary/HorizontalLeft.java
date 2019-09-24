@@ -209,8 +209,6 @@ public class HorizontalLeft extends ListFragment{
             //SQLiteDatabase db = dbHelper.getWritableDatabase();
             //Cursor cursor2 = db.rawQuery("select word,translation from EnWords where word like '"+keyWord+"%'",null);
 
-
-
             //2.content resolver获取content provider，利用封装query查询
             Uri uri = Uri.parse(Configuration.URI_SEARCH);
             ContentResolver resolver =  getActivity().getContentResolver();

@@ -11,3 +11,4 @@
 9.16 音标词性例句api对接完成
 9.17 新闻抓取init
 9.18 新闻抓取前十条完成，滚屏底部自动加载未完成
+9.18 provider -- 设置<provider android:exported="true" />才可以允许其他应用调用此应用content provider
