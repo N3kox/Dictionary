@@ -94,6 +94,36 @@ public class HtmlParser {
             return list;
         }
 
+        //抓取适配种类3
+        pattern1 = Pattern.compile("<p id=\"zt\"><!--repaste.body.begin-->(\\s*)((<p>(.*)</p>(\\s*))*)</div>(\\s*)" + "<style type=\"text/css\">");
+        matcher1 = pattern1.matcher(result);
+        if(matcher1.find()){
+            StringBuffer sb = new StringBuffer();
+            Log.d("#INFO","found type 3");
+            sb.append(matcher1.group(2).trim());
+            Log.d("#INFO","FULL:"+matcher1.group(2).trim());
+            Pattern patternDetail = Pattern.compile("<p>(.*)</p>(\\s*)");
+            Matcher matcherDetail = patternDetail.matcher(sb.toString());
+            while (matcherDetail.find()) {
+                list.add(matcherDetail.group(1).trim() + "\n");
+                Log.d("#INFO", "MSG:"+matcherDetail.group(1).trim());
+            }
+            return list;
+        }
+
+
+        //抓取适配种类4
+        pattern1 = Pattern.compile("lang=\"EN-US\">(.*)</");
+        matcher1 = pattern1.matcher(result);
+        int found4 = 0;
+        while(matcher1.find()){
+            if(found4 == 0){
+                Log.d("#INFO","found type 4");
+                found4 = 1;
+            }
+            list.add(matcher1.group(1).trim() + "\n");
+        }
+
 
         //均不适配
         Log.d("#INFO","not found!");
