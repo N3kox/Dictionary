@@ -112,7 +112,7 @@ public class HtmlParser {
             return list;
         }
 
-        
+
         //均不适配
         Log.d("#INFO","not found!");
         list.add("-1");
