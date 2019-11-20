@@ -102,7 +102,7 @@ public class HtmlParser {
             Log.d("#INFO","found type 3");
             sb.append(matcher1.group(2).trim());
             Log.d("#INFO","FULL:"+matcher1.group(2).trim());
-            Pattern patternDetail = Pattern.compile("<p>(.*)</p>(\\s*)");
+            Pattern patternDetail = Pattern.compile("lang=\"EN-US\">(.*)</(.*)(\\s*)");
             Matcher matcherDetail = patternDetail.matcher(sb.toString());
             while (matcherDetail.find()) {
                 list.add(matcherDetail.group(1).trim() + "\n");
@@ -113,7 +113,7 @@ public class HtmlParser {
 
 
         //抓取适配种类4
-        pattern1 = Pattern.compile("lang=\"EN-US\">(.*)</");
+        pattern1 = Pattern.compile("(\\s*)lang=\"EN-US\">(\\s*)(.*)(\\s*)</span>");
         matcher1 = pattern1.matcher(result);
         int found4 = 0;
         while(matcher1.find()){
@@ -121,7 +121,8 @@ public class HtmlParser {
                 Log.d("#INFO","found type 4");
                 found4 = 1;
             }
-            list.add(matcher1.group(1).trim() + "\n");
+            list.add(matcher1.group(3).trim() + "\n");
+            return list;
         }
 
 
